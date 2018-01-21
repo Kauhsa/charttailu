@@ -8,7 +8,7 @@ const SMParse = require('./parser');
 const exportSm = require('./exportSm');
 
 const main = async () => {
-  const paths = await glob(process.argv[2] + '**/*.sm');
+  const paths = await glob(process.argv[2] + '**' + path.sep + '*.sm');
 
   const parsedCharts = _.flatMap(paths, smPath => {
     const file = fs.readFileSync(smPath, { encoding: 'utf8' });
@@ -28,4 +28,4 @@ const main = async () => {
   writer.end();
 }
 
-main();
+main().catch(err => console.error(err));
