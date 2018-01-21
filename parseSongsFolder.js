@@ -18,7 +18,7 @@ const main = async () => {
     const file = fs.readFileSync(smPath, { encoding: 'utf8' });
     const smFile = SMParse(file, {});
     
-    const pack = _.nth(smPath.split(path.sep), -3);
+    const pack = _.nth(smPath.split('/'), -3);
 
     return exportSm(smFile).map(chart => ({
       pack,
