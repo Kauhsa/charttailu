@@ -65,11 +65,13 @@ const beatToSeconds = (bpmChanges, stops, beat) => {
     length += (beatsOnRange / firstBpm) * 60
   })
 
-  stops.forEach(([stopBeat, stopSeconds]) => {
-    if (parseFloat(stopBeat) < parseFloat(beat)) {
-      length += parseFloat(stopSeconds);
-    }
-  })
+  if (stops) {
+    stops.forEach(([stopBeat, stopSeconds]) => {
+      if (parseFloat(stopBeat) < parseFloat(beat)) {
+        length += parseFloat(stopSeconds);
+      }
+    })
+  }
   
   return length;
 }
