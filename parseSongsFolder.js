@@ -28,7 +28,7 @@ const main = async () => {
       console.error("Couldn't parse ", smPath);
       console.error(e);
       console.error('Continuing anyway...');
-      return [[]];
+      return [];
     }
   })
 
