@@ -8,7 +8,11 @@ const SMParse = require('./parser');
 const exportSm = require('./exportSm');
 
 const main = async () => {
+  const globbing = process.argv[2] + '**' + path.sep + '*.sm'
+  console.log('Globbing path:', globbing)
+
   const paths = await glob(process.argv[2] + '**' + path.sep + '*.sm');
+  console.log(`Found ${paths.length} files`)
 
   const parsedCharts = _.flatMap(paths, smPath => {
     const file = fs.readFileSync(smPath, { encoding: 'utf8' });
@@ -22,8 +26,11 @@ const main = async () => {
     }))
   })
 
+  const csvPath = process.argv[3]; 
+  console.log('Writing to', csvPath)
+
   var writer = csvWriter();
-  writer.pipe(fs.createWriteStream(process.argv[3]));
+  writer.pipe(fs.createWriteStream(csvPath));
   parsedCharts.forEach(chart => writer.write(chart));
   writer.end();
 }
