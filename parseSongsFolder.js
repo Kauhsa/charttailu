@@ -11,19 +11,25 @@ const main = async () => {
   const globbing = process.argv[2] + '**' + path.sep + '*.sm'
   console.log('Globbing path:', globbing)
 
-  const paths = glob.sync(process.argv[2] + '**' + path.sep + '*.sm');
+  const paths = glob.sync(globbing);
   console.log(`Found ${paths.length} files`)
 
   const parsedCharts = _.flatMap(paths, smPath => {
-    const file = fs.readFileSync(smPath, { encoding: 'utf8' });
-    const smFile = SMParse(file, {});
+    try {
+      const file = fs.readFileSync(smPath, { encoding: 'utf8' });
+      const smFile = SMParse(file, {});
+      const pack = _.nth(smPath.split('/'), -3);
     
-    const pack = _.nth(smPath.split('/'), -3);
-
-    return exportSm(smFile).map(chart => ({
-      pack,
-      ...chart
-    }))
+      return exportSm(smFile).map(chart => ({
+        pack,
+        ...chart
+      }))
+    } catch (e) {
+      console.error("Couldn't parse ", smPath);
+      console.error(e);
+      console.error('Continuing anyway...');
+      return [[]];
+    }
   })
 
   const csvPath = process.argv[3]; 
