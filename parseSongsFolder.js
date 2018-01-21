@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const glob = require('fast-glob');
+const glob = require('glob');
 const csvWriter = require('csv-write-stream');
 
 const SMParse = require('./parser');
@@ -11,7 +11,7 @@ const main = async () => {
   const globbing = process.argv[2] + '**' + path.sep + '*.sm'
   console.log('Globbing path:', globbing)
 
-  const paths = await glob(process.argv[2] + '**' + path.sep + '*.sm');
+  const paths = glob.sync(process.argv[2] + '**' + path.sep + '*.sm');
   console.log(`Found ${paths.length} files`)
 
   const parsedCharts = _.flatMap(paths, smPath => {

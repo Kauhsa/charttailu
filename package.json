@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "csv-write-stream": "^2.0.0",
-    "fast-glob": "^1.0.1",
+    "glob": "^7.1.2",
     "lodash": "^4.17.4"
   }
 }
