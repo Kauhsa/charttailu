@@ -97,7 +97,8 @@ const parseFile = (smFile) => {
       diff: chart.diff,
       length: getSongLength(smFile.changes.bpm, smFile.changes.stop, chart.notes),
       steps: stepCount(chart.notes),
-      streamMeasures: streamMeasures(chart.notes, 16)
+      streamMeasures16th: streamMeasures(chart.notes, 16),
+      streamMeasures8th: streamMeasures(chart.notes, 8)
     }))
 }
 
