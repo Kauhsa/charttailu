@@ -21,6 +21,7 @@ const main = async () => {
       const pack = _.nth(smPath.split('/'), -3);
     
       return exportSm(smFile).map(chart => ({
+        path: smPath,
         pack,
         ...chart
       }))

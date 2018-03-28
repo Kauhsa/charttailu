@@ -1,5 +1,7 @@
 "use strict";
 
+const _ = require('lodash');
+
 /*
 Resulting data structure:
 {
@@ -81,6 +83,9 @@ var SMParse = function SMParse(str, opts) {
     }
 
     const result = {};
+    const displayBpms = raw.DISPLAYBPM.length > 0 ?
+        raw.DISPLAYBPM[0].split(':').map(n => parseFloat(n, 10)) :
+        undefined
 
     result.meta = {
         title: opts.translit ? raw.TITLETRANSLIT : raw.TITLE,
@@ -91,7 +96,10 @@ var SMParse = function SMParse(str, opts) {
         cd: raw.CDTITLE,
         genre: raw.GENRE,
         type: sm ? ["sm"] : ["ssc", raw.VERSION],
-        select: raw.SELECTABLE ? (raw.SELECTABLE === "YES") : undefined
+        select: raw.SELECTABLE ? (raw.SELECTABLE === "YES") : undefined,
+        // conveniently, last/first works even if a single displaybpm is set!
+        minDisplayBpm: displayBpms ? _.min(displayBpms) : undefined,
+        maxDisplayBpm: displayBpms ? _.max(displayBpms) : undefined
     };
 
     result.files = {

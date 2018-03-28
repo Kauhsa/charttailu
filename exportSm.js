@@ -94,6 +94,8 @@ const parseFile = (smFile) => {
       rating: chart.meter,
       minBpm: smFile.changes.bpm.reduce((a, b) => Math.min(a, parseFloat(b[1])), +Infinity),
       maxBpm: smFile.changes.bpm.reduce((a, b) => Math.max(a, parseFloat(b[1])), -Infinity),
+      minDisplayBpm: smFile.meta.minDisplayBpm,
+      maxDisplayBpm: smFile.meta.maxDisplayBpm,
       diff: chart.diff,
       length: getSongLength(smFile.changes.bpm, smFile.changes.stop, chart.notes),
       steps: stepCount(chart.notes),
