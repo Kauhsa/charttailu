@@ -11,7 +11,7 @@ const main = async () => {
   const globbing = process.argv[2] + '**' + path.sep + '*.sm'
   console.log('Globbing path:', globbing)
 
-  const paths = glob.sync(globbing);
+  const paths = glob.sync(globbing, { nocase: true });
   console.log(`Found ${paths.length} files`)
 
   const parsedCharts = _.flatMap(paths, smPath => {
