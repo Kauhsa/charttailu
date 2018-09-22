@@ -97,7 +97,6 @@ var SMParse = function SMParse(str, opts) {
         genre: raw.GENRE,
         type: sm ? ["sm"] : ["ssc", raw.VERSION],
         select: raw.SELECTABLE ? (raw.SELECTABLE === "YES") : undefined,
-        // conveniently, last/first works even if a single displaybpm is set!
         minDisplayBpm: displayBpms ? _.min(displayBpms) : undefined,
         maxDisplayBpm: displayBpms ? _.max(displayBpms) : undefined
     };
