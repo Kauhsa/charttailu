@@ -1,17 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const glob = require('glob');
 const csvWriter = require('csv-write-stream');
+const klawSync = require('klaw-sync')
 
 const SMParse = require('./parser');
 const exportSm = require('./exportSm');
 
 const main = async () => {
-  const globbing = process.argv[2] + '**' + path.sep + '*.sm'
-  console.log('Globbing path:', globbing)
+  const directory = process.argv[2]
+  console.log('Finding charts from directory:', directory)
 
-  const paths = glob.sync(globbing, { nocase: true });
+  const paths = klawSync(directory, { nodir: true })
+    .map(({ path }) => path)
+    .filter(path => path.toLowerCase().endsWith('.sm'))
+
   console.log(`Found ${paths.length} files`)
 
   const parsedCharts = _.flatMap(paths, smPath => {
