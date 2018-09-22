@@ -84,6 +84,23 @@ const streamMeasures = (notes, minStream) => {
     .reduce((a, b) => a + b, 0)
 }
 
+const breakdown = (notes, minStream) => {
+  return notes
+    .reduce((breakdown, [measureNumber, rows]) => {
+      const isStream = isStreamMeasure(rows, minStream)
+      const last = _.last(breakdown)
+
+      if (!last || last.isStream !== isStream) {
+        return [...breakdown, { count: 1, isStream }]
+      } else {
+        const allButLast = _.initial(breakdown)
+        return [...allButLast, { count: last.count + 1, isStream: last.isStream }]
+      }
+    }, [])
+    .map(({ isStream, count }) => isStream ? '' + count : `(${count})`)
+    .join('-')
+}
+
 const parseFile = (smFile) => {
   return smFile.charts
     .filter(chart => chart.type === 'dance-single')
@@ -100,7 +117,8 @@ const parseFile = (smFile) => {
       length: getSongLength(smFile.changes.bpm, smFile.changes.stop, chart.notes),
       steps: stepCount(chart.notes),
       streamMeasures16th: streamMeasures(chart.notes, 16),
-      streamMeasures8th: streamMeasures(chart.notes, 8)
+      streamMeasures8th: streamMeasures(chart.notes, 8),
+      breakdown: breakdown(chart.notes, 16)
     }))
 }
 
